@@ -24,15 +24,24 @@ def create_app(test_config=None):
 
     @app.route("/")
     def index():
-        return render_template("index.html")
+        return render_template("index.html", page_title="Home")
     
     @app.route("/about")
     def about():
-        return render_template("about.html")
+        return render_template("about.html", page_title="About")
     
     @app.route("/palindrome")
     def palindrome():
-        return render_template("palindrome.html")
+        return render_template("palindrome.html", 
+                               page_title="Palindrome Detector")
+    
+    @app.route("/check", methods=("POST",))
+    def check():
+        phrase = request.form["phrase"]
+        is_palindrome = Phrase(phrase).ispalindrome()
+        return render_template("result.html",
+                               phrase=phrase,
+                               is_palindrome=is_palindrome)
 
     return app
 
